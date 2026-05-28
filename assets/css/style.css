@@ -1450,10 +1450,46 @@ table td:not(:nth-child(1)),
     width: auto;
   }
   
-  /* Responsive table containers */
-  .recentVehicles {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+  /* Responsive table containers - horizontal scroll for all tables */
+  .recentVehicles,
+  .details,
+  .recentOrders,
+  #or-table,
+  #trailer-or-table,
+  #dashboard-vehicle-table,
+  #status-table,
+  #trailer-table,
+  #status-container-table,
+  #status-table-2,
+  #trailer-cr-table,
+  #vehicle-details-table,
+  #rfid-account-table,
+  #tire-size-table,
+  #trailer-registry-table,
+  #container-registry-table,
+  #tools-table,
+  #repair-truck-table,
+  #repair-trailer-table,
+  #repair-container-table,
+  #vehicle-table,
+  #registry-trailer-table,
+  #container-table,
+  #status-summary-table,
+  #gps-status-table,
+  #client-table,
+  #rfid-table,
+  #diesel-min-table,
+  #diesel-ave-table {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+  /* Ensure tables maintain their width when scrolling */
+  table,
+  .recentVehicles table,
+  .details table {
+    min-width: 100% !important;
+    width: max-content !important;
   }
   
   /* Responsive navigation improvements */

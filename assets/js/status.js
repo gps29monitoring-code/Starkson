@@ -260,6 +260,16 @@ async function loadVehicleStatusSummary(plantFilter = null) {
     console.log('Loading vehicle status summary from status truck table data...');
     console.log('Plant filter:', plantFilter);
     
+    // Update title based on plant filter
+    const titleElement = document.getElementById('vehicle-status-summary-title');
+    if (titleElement) {
+      if (plantFilter) {
+        titleElement.textContent = `Vehicle Status Summary - ${plantFilter}`;
+      } else {
+        titleElement.textContent = 'Vehicle Status Summary';
+      }
+    }
+    
     // Use vehicleStatusRecords from main.js (contains merged data from vehicle_registry + drivers_status)
     let vehicles = [];
     if (typeof window.vehicleStatusRecords !== 'undefined' && window.vehicleStatusRecords) {
@@ -410,46 +420,49 @@ function displayVehicleStatusSummary(vehicles) {
   const grandTotal4 = counts.operational.wheeler4 + counts.hustling.wheeler4 + counts.down.wheeler4 + counts.totallyDown.wheeler4;
   const grandTotal = operationalTotal + hustlingTotal + downTotal + totallyDownTotal;
   
+  // Helper function to convert 0 to dash
+  const formatValue = (value) => value === 0 ? '-' : value;
+  
   // Update table cells
-  document.getElementById('summary-truckhead-operational').textContent = counts.operational.truckHead;
-  document.getElementById('summary-12wheeler-operational').textContent = counts.operational.wheeler12;
-  document.getElementById('summary-10wheeler-operational').textContent = counts.operational.wheeler10;
-  document.getElementById('summary-8wheeler-operational').textContent = counts.operational.wheeler8;
-  document.getElementById('summary-6wheeler-operational').textContent = counts.operational.wheeler6;
-  document.getElementById('summary-4wheeler-operational').textContent = counts.operational.wheeler4;
-  document.getElementById('summary-total-operational').textContent = operationalTotal;
+  document.getElementById('summary-truckhead-operational').textContent = formatValue(counts.operational.truckHead);
+  document.getElementById('summary-12wheeler-operational').textContent = formatValue(counts.operational.wheeler12);
+  document.getElementById('summary-10wheeler-operational').textContent = formatValue(counts.operational.wheeler10);
+  document.getElementById('summary-8wheeler-operational').textContent = formatValue(counts.operational.wheeler8);
+  document.getElementById('summary-6wheeler-operational').textContent = formatValue(counts.operational.wheeler6);
+  document.getElementById('summary-4wheeler-operational').textContent = formatValue(counts.operational.wheeler4);
+  document.getElementById('summary-total-operational').textContent = formatValue(operationalTotal);
   
-  document.getElementById('summary-truckhead-hustling').textContent = counts.hustling.truckHead;
-  document.getElementById('summary-12wheeler-hustling').textContent = counts.hustling.wheeler12;
-  document.getElementById('summary-10wheeler-hustling').textContent = counts.hustling.wheeler10;
-  document.getElementById('summary-8wheeler-hustling').textContent = counts.hustling.wheeler8;
-  document.getElementById('summary-6wheeler-hustling').textContent = counts.hustling.wheeler6;
-  document.getElementById('summary-4wheeler-hustling').textContent = counts.hustling.wheeler4;
-  document.getElementById('summary-total-hustling').textContent = hustlingTotal;
+  document.getElementById('summary-truckhead-hustling').textContent = formatValue(counts.hustling.truckHead);
+  document.getElementById('summary-12wheeler-hustling').textContent = formatValue(counts.hustling.wheeler12);
+  document.getElementById('summary-10wheeler-hustling').textContent = formatValue(counts.hustling.wheeler10);
+  document.getElementById('summary-8wheeler-hustling').textContent = formatValue(counts.hustling.wheeler8);
+  document.getElementById('summary-6wheeler-hustling').textContent = formatValue(counts.hustling.wheeler6);
+  document.getElementById('summary-4wheeler-hustling').textContent = formatValue(counts.hustling.wheeler4);
+  document.getElementById('summary-total-hustling').textContent = formatValue(hustlingTotal);
   
-  document.getElementById('summary-truckhead-down').textContent = counts.down.truckHead;
-  document.getElementById('summary-12wheeler-down').textContent = counts.down.wheeler12;
-  document.getElementById('summary-10wheeler-down').textContent = counts.down.wheeler10;
-  document.getElementById('summary-8wheeler-down').textContent = counts.down.wheeler8;
-  document.getElementById('summary-6wheeler-down').textContent = counts.down.wheeler6;
-  document.getElementById('summary-4wheeler-down').textContent = counts.down.wheeler4;
-  document.getElementById('summary-total-down').textContent = downTotal;
+  document.getElementById('summary-truckhead-down').textContent = formatValue(counts.down.truckHead);
+  document.getElementById('summary-12wheeler-down').textContent = formatValue(counts.down.wheeler12);
+  document.getElementById('summary-10wheeler-down').textContent = formatValue(counts.down.wheeler10);
+  document.getElementById('summary-8wheeler-down').textContent = formatValue(counts.down.wheeler8);
+  document.getElementById('summary-6wheeler-down').textContent = formatValue(counts.down.wheeler6);
+  document.getElementById('summary-4wheeler-down').textContent = formatValue(counts.down.wheeler4);
+  document.getElementById('summary-total-down').textContent = formatValue(downTotal);
   
-  document.getElementById('summary-truckhead-totallydown').textContent = counts.totallyDown.truckHead;
-  document.getElementById('summary-12wheeler-totallydown').textContent = counts.totallyDown.wheeler12;
-  document.getElementById('summary-10wheeler-totallydown').textContent = counts.totallyDown.wheeler10;
-  document.getElementById('summary-8wheeler-totallydown').textContent = counts.totallyDown.wheeler8;
-  document.getElementById('summary-6wheeler-totallydown').textContent = counts.totallyDown.wheeler6;
-  document.getElementById('summary-4wheeler-totallydown').textContent = counts.totallyDown.wheeler4;
-  document.getElementById('summary-total-totallydown').textContent = totallyDownTotal;
+  document.getElementById('summary-truckhead-totallydown').textContent = formatValue(counts.totallyDown.truckHead);
+  document.getElementById('summary-12wheeler-totallydown').textContent = formatValue(counts.totallyDown.wheeler12);
+  document.getElementById('summary-10wheeler-totallydown').textContent = formatValue(counts.totallyDown.wheeler10);
+  document.getElementById('summary-8wheeler-totallydown').textContent = formatValue(counts.totallyDown.wheeler8);
+  document.getElementById('summary-6wheeler-totallydown').textContent = formatValue(counts.totallyDown.wheeler6);
+  document.getElementById('summary-4wheeler-totallydown').textContent = formatValue(counts.totallyDown.wheeler4);
+  document.getElementById('summary-total-totallydown').textContent = formatValue(totallyDownTotal);
   
-  document.getElementById('summary-grand-truckhead').textContent = grandTotalTruckHead;
-  document.getElementById('summary-grand-12wheeler').textContent = grandTotal12;
-  document.getElementById('summary-grand-10wheeler').textContent = grandTotal10;
-  document.getElementById('summary-grand-8wheeler').textContent = grandTotal8;
-  document.getElementById('summary-grand-6wheeler').textContent = grandTotal6;
-  document.getElementById('summary-grand-4wheeler').textContent = grandTotal4;
-  document.getElementById('summary-grand-total').textContent = grandTotal;
+  document.getElementById('summary-grand-truckhead').textContent = formatValue(grandTotalTruckHead);
+  document.getElementById('summary-grand-12wheeler').textContent = formatValue(grandTotal12);
+  document.getElementById('summary-grand-10wheeler').textContent = formatValue(grandTotal10);
+  document.getElementById('summary-grand-8wheeler').textContent = formatValue(grandTotal8);
+  document.getElementById('summary-grand-6wheeler').textContent = formatValue(grandTotal6);
+  document.getElementById('summary-grand-4wheeler').textContent = formatValue(grandTotal4);
+  document.getElementById('summary-grand-total').textContent = formatValue(grandTotal);
   
   console.log('Summary table updated successfully');
   

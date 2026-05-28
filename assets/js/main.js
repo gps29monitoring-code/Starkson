@@ -467,6 +467,11 @@ performUniversalSearch('');
 // Reset to show all plants whenever user changes tabs/views
 selectedPlantFilter = null;
 plantStateManager.setSelectedPlant(null);
+// Reset all tab-specific plant filters
+truckPlantFilter = null;
+trailerPlantFilter = null;
+containerPlantFilter = null;
+gpsPlantFilter = null;
 // Clear any existing localStorage entries for plant filters
 localStorage.removeItem('selectedPlant');
 localStorage.removeItem('selectedPlantFilter');
@@ -494,33 +499,6 @@ if (viewElement) {
 }
 // Update plant counts for the current view with tab type
 loadPlantCounts(viewName, currentFilterType);
-// Update plant card UI to show active state based on current tab's filter
-if (viewElement) {
-  // Get the appropriate plant filter based on tab type
-  let currentPlantFilter = null;
-  switch(currentFilterType) {
-    case 'truck':
-      currentPlantFilter = truckPlantFilter;
-      break;
-    case 'trailer':
-      currentPlantFilter = trailerPlantFilter;
-      break;
-    case 'container':
-      currentPlantFilter = containerPlantFilter;
-      break;
-    default:
-      currentPlantFilter = truckPlantFilter;
-  }
-  
-  // Update plant card UI to show active state
-  const cards = viewElement.querySelectorAll('.plant-card');
-  cards.forEach(card => {
-    card.classList.remove('active');
-    if (currentPlantFilter && card.dataset.plant === currentPlantFilter) {
-      card.classList.add('active');
-    }
-  });
-}
 // Initialize dashboard module if dashboard view
 if (viewName === 'dashboard') {
 if (window.dashboardModule && typeof window.dashboardModule.initializeDashboard === 'function') {
@@ -1238,6 +1216,7 @@ let selectedPlantFilter = null; // Default to All Plants
 let truckPlantFilter = null; // Truck tab plant filter
 let trailerPlantFilter = null; // Trailer tab plant filter
 let containerPlantFilter = null; // Container tab plant filter
+let gpsPlantFilter = null; // GPS tab plant filter
 let currentRegistryFilter = 'truck'; // Default registry filter
 let currentStatusFilter = 'truck'; // Default status filter
 // Legacy function for backward compatibility
@@ -1457,10 +1436,15 @@ let currentFilterType = 'truck'; // Default to truck
 if (activeView) {
   const viewName = activeView.id.replace('-view', '');
   
-  // Get the active filter button for the current view
-  const activeFilterBtn = activeView.querySelector('.registry-filter-btn.active');
-  if (activeFilterBtn) {
-    currentFilterType = activeFilterBtn.dataset.filter;
+  // Check if this is the GPS view
+  if (viewName === 'gps-status') {
+    currentFilterType = 'gps';
+  } else {
+    // Get the active filter button for the current view
+    const activeFilterBtn = activeView.querySelector('.registry-filter-btn.active');
+    if (activeFilterBtn) {
+      currentFilterType = activeFilterBtn.dataset.filter;
+    }
   }
   
   // Set the tab-specific plant filter
@@ -1473,6 +1457,9 @@ if (activeView) {
       break;
     case 'container':
       containerPlantFilter = plant;
+      break;
+    case 'gps':
+      gpsPlantFilter = plant;
       break;
     default:
       truckPlantFilter = plant;
@@ -3943,15 +3930,6 @@ switch(filterType) {
 // Update global filter for backward compatibility
 selectedPlantFilter = currentPlantFilter;
 
-// Update plant card UI to show active state for current tab
-const cards = document.querySelectorAll('#repair-view .plant-card');
-cards.forEach(card => {
-  card.classList.remove('active');
-  if (currentPlantFilter && card.dataset.plant === currentPlantFilter) {
-    card.classList.add('active');
-  }
-});
-
 // Update plant counts with the new tab type
 loadPlantCounts('repair', filterType);
 
@@ -5320,15 +5298,6 @@ switch(filterType) {
 // Update global filter for backward compatibility
 selectedPlantFilter = currentPlantFilter;
 
-// Update plant card UI to show active state for current tab
-const cards = document.querySelectorAll('#registry-view .plant-card');
-cards.forEach(card => {
-  card.classList.remove('active');
-  if (currentPlantFilter && card.dataset.plant === currentPlantFilter) {
-    card.classList.add('active');
-  }
-});
-
 // Update plant counts with the new tab type
 loadPlantCounts('registry', filterType);
 
@@ -5427,15 +5396,6 @@ switch(filterType) {
 // Update global filter for backward compatibility
 selectedPlantFilter = currentPlantFilter;
 
-// Update plant card UI to show active state for current tab
-const cards = document.querySelectorAll('#status-view .plant-card');
-cards.forEach(card => {
-  card.classList.remove('active');
-  if (currentPlantFilter && card.dataset.plant === currentPlantFilter) {
-    card.classList.add('active');
-  }
-});
-
 // Update plant counts with the new tab type
 loadPlantCounts('status', filterType);
 
@@ -5510,15 +5470,6 @@ switch(filterType) {
 
 // Update global filter for backward compatibility
 selectedPlantFilter = currentPlantFilter;
-
-// Update plant card UI to show active state for current tab
-const cards = document.querySelectorAll('#trucks-view .plant-card');
-cards.forEach(card => {
-  card.classList.remove('active');
-  if (currentPlantFilter && card.dataset.plant === currentPlantFilter) {
-    card.classList.add('active');
-  }
-});
 
 // Update plant counts with the new tab type
 loadPlantCounts('trucks', filterType);
@@ -7888,8 +7839,8 @@ let query = supabaseClient
 .select('*')
 .order('date', { ascending: false });
 // Apply plant filter if active
-if (selectedPlantFilter) {
-query = query.eq('plant', selectedPlantFilter);
+if (gpsPlantFilter) {
+query = query.eq('plant', gpsPlantFilter);
 }
 const { data: gpsRecords, error } = await query;
 if (error) throw error;
