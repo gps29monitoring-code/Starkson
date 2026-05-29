@@ -96,7 +96,8 @@
   width: 8%;
   min-width: 70px;
   white-space: nowrap;
-  text-align: center;
+  text-align: center !important;
+  background-color:  lightgrey;
 }
 
 #client-view .details .recentVehicles table td:nth-child(6),

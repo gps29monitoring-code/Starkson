@@ -149,6 +149,11 @@
       .replace(/"/g, '&quot;');
   }
 
+  function formatNumber(value) {
+    const num = parseInt(value, 10);
+    return num === 0 ? '-' : String(num);
+  }
+
   function renderTable(rows) {
     const tableBody = getRfidTableBody();
     if (!tableBody) return;
@@ -175,20 +180,20 @@
 
       const cells = [
         { html: escapeHtml(destination) },
-        { text: String(derived.total2) },
-        { text: String(derived.total3) },
-        { text: String(derived.autosweep2) },
-        { text: String(derived.autosweep3) },
-        { text: String(derived.easytrip2) },
-        { text: String(derived.easytrip3) },
-        { text: String(counts.going_to_autosweep_class2) },
-        { text: String(counts.going_to_autosweep_class3) },
-        { text: String(counts.going_back_autosweep_class2) },
-        { text: String(counts.going_back_autosweep_class3) },
-        { text: String(counts.going_to_easytrip_class2) },
-        { text: String(counts.going_to_easytrip_class3) },
-        { text: String(counts.going_back_easytrip_class2) },
-        { text: String(counts.going_back_easytrip_class3) },
+        { text: formatNumber(derived.total2) },
+        { text: formatNumber(derived.total3) },
+        { text: formatNumber(derived.autosweep2) },
+        { text: formatNumber(derived.autosweep3) },
+        { text: formatNumber(derived.easytrip2) },
+        { text: formatNumber(derived.easytrip3) },
+        { text: formatNumber(counts.going_to_autosweep_class2) },
+        { text: formatNumber(counts.going_to_autosweep_class3) },
+        { text: formatNumber(counts.going_back_autosweep_class2) },
+        { text: formatNumber(counts.going_back_autosweep_class3) },
+        { text: formatNumber(counts.going_to_easytrip_class2) },
+        { text: formatNumber(counts.going_to_easytrip_class3) },
+        { text: formatNumber(counts.going_back_easytrip_class2) },
+        { text: formatNumber(counts.going_back_easytrip_class3) },
       ];
 
       cells.forEach((c) => {
@@ -201,7 +206,7 @@
       // Only show Edit button for admin users
       if (window.authSystem && window.authSystem.isAdmin()) {
         const actionTd = document.createElement('td');
-        actionTd.className = 'auth-required';
+        actionTd.className = 'auth-required'; 
         const editBtn = document.createElement('button');
         editBtn.type = 'button';
         editBtn.className = 'btn-edit';

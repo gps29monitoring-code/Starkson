@@ -154,6 +154,23 @@ function openClientModal(clientId = null) {
       form.reset();
     }
     
+    // Set plant field to currently selected plant
+    const plantSelect = document.getElementById('client-plant');
+    if (plantSelect) {
+      // Try to get selected plant from plantStateManager or selectedPlantFilter
+      let selectedPlant = null;
+      if (window.plantStateManager) {
+        selectedPlant = window.plantStateManager.getSelectedPlant();
+      }
+      // Fallback to selectedPlantFilter if plantStateManager not available
+      if (!selectedPlant && typeof selectedPlantFilter !== 'undefined') {
+        selectedPlant = selectedPlantFilter;
+      }
+      if (selectedPlant) {
+        plantSelect.value = selectedPlant;
+      }
+    }
+    
     // Reset modal title to "Add Client"
     const modalTitle = document.querySelector('#client-modal .modal-header h2');
     if (modalTitle) modalTitle.textContent = 'Add Client';

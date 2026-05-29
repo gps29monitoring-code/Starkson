@@ -1,7 +1,7 @@
 // ====================== Registry View Functions ==========================
 
 // Registry state variables
-let currentRegistryView = 'vehicles'; // 'vehicles', 'trailers', 'containers'
+let currentRegistryView = 'truck'; // 'truck', 'trailer', 'container'
 let registryFilter = 'all'; // 'all', 'plant1', 'plant2', etc.
 
 // Initialize registry when view is shown
@@ -11,33 +11,44 @@ function initializeRegistry() {
   // Set up event listeners for registry buttons
   setupRegistryEventListeners();
   
-  // Load default view (vehicles)
+  // Set truck button as active by default
+  const truckBtn = document.getElementById('registry-truck-btn');
+  if (truckBtn) {
+    truckBtn.classList.add('active');
+  }
+  
+  // Load plant counts with truck as default tab type
+  if (window.loadPlantCounts) {
+    window.loadPlantCounts('registry', 'truck');
+  }
+  
+  // Load default view (truck)
   loadRegistryData();
 }
 
 // Set up registry event listeners
 function setupRegistryEventListeners() {
-  // Vehicle registry button
-  const vehiclesBtn = document.getElementById('registry-vehicles-btn');
-  if (vehiclesBtn) {
-    vehiclesBtn.addEventListener('click', () => {
-      switchRegistryView('vehicles');
+  // Truck registry button
+  const truckBtn = document.getElementById('registry-truck-btn');
+  if (truckBtn) {
+    truckBtn.addEventListener('click', () => {
+      switchRegistryView('truck');
     });
   }
   
   // Trailer registry button
-  const trailersBtn = document.getElementById('registry-trailers-btn');
+  const trailersBtn = document.getElementById('registry-trailer-btn');
   if (trailersBtn) {
     trailersBtn.addEventListener('click', () => {
-      switchRegistryView('trailers');
+      switchRegistryView('trailer');
     });
   }
   
   // Container registry button
-  const containersBtn = document.getElementById('registry-containers-btn');
+  const containersBtn = document.getElementById('registry-container-btn');
   if (containersBtn) {
     containersBtn.addEventListener('click', () => {
-      switchRegistryView('containers');
+      switchRegistryView('container');
     });
   }
   
@@ -56,24 +67,24 @@ function switchRegistryView(view) {
   currentRegistryView = view;
   
   // Update button states
-  const vehiclesBtn = document.getElementById('registry-vehicles-btn');
-  const trailersBtn = document.getElementById('registry-trailers-btn');
-  const containersBtn = document.getElementById('registry-containers-btn');
+  const truckBtn = document.getElementById('registry-truck-btn');
+  const trailersBtn = document.getElementById('registry-trailer-btn');
+  const containersBtn = document.getElementById('registry-container-btn');
   
   // Remove active class from all buttons
-  [vehiclesBtn, trailersBtn, containersBtn].forEach(btn => {
+  [truckBtn, trailersBtn, containersBtn].forEach(btn => {
     if (btn) btn.classList.remove('active');
   });
   
   // Add active class to selected button
   switch (view) {
-    case 'vehicles':
-      if (vehiclesBtn) vehiclesBtn.classList.add('active');
+    case 'truck':
+      if (truckBtn) truckBtn.classList.add('active');
       break;
-    case 'trailers':
+    case 'trailer':
       if (trailersBtn) trailersBtn.classList.add('active');
       break;
-    case 'containers':
+    case 'container':
       if (containersBtn) containersBtn.classList.add('active');
       break;
   }
@@ -105,13 +116,13 @@ async function loadRegistryData() {
   
   try {
     switch (currentRegistryView) {
-      case 'vehicles':
+      case 'truck':
         await loadVehicles(registryFilter === 'all' ? null : registryFilter);
         break;
-      case 'trailers':
+      case 'trailer':
         await loadTrailers(registryFilter === 'all' ? null : registryFilter);
         break;
-      case 'containers':
+      case 'container':
         await loadContainers(registryFilter === 'all' ? null : registryFilter);
         break;
     }
