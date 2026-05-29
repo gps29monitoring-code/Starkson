@@ -6309,6 +6309,30 @@ input[readonly] {
 
 }
 
+/* Vehicle Summary Table - Clickable Headers */
+#dashboard-vehicle-summary-table .size-filter-btn {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+#dashboard-vehicle-summary-table .size-filter-btn:hover {
+  background-color: rgba(139, 63, 63, 0.1);
+  color: #8b3f3f;
+  font-weight: 600;
+}
+
+#dashboard-vehicle-summary-table .size-filter-btn::after {
+  content: '🔍';
+  margin-left: 5px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#dashboard-vehicle-summary-table .size-filter-btn:hover::after {
+  opacity: 1;
+}
+
 
 
 #gps-form input[type="date"],
@@ -11886,6 +11910,7 @@ body.about-view-active .topbar .search {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
+  table-layout: fixed;
 }
 
 #dashboard-vehicle-summary-table thead tr {
@@ -11894,19 +11919,21 @@ body.about-view-active .topbar .search {
 }
 
 #dashboard-vehicle-summary-table thead td {
-  padding: 12px 15px;
+  padding: 10px 8px;
   text-align: center;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   border: 1px solid #ddd;
+  white-space: nowrap;
 }
 
 #dashboard-vehicle-summary-table tbody td {
-  padding: 12px 15px;
+  padding: 10px 8px;
   text-align: center;
   border: 1px solid #ddd;
-  font-size: 14px;
+  font-size: 13px;
   background-color: #fff;
+  white-space: nowrap;
 }
 
 #dashboard-vehicle-summary-table tbody tr:hover {
@@ -11939,4 +11966,23 @@ body.about-view-active .topbar .search {
     padding: 6px 3px;
     min-width: 40px;
   }
+}
+
+/* Prevent horizontal scroll for Vehicle Summary table */
+#dashboard-vehicle-summary-table {
+  width: 100% !important;
+  min-width: auto !important;
+  max-width: 100% !important;
+  table-layout: fixed;
+}
+
+/* Override overflow for all tables in dashboard to prevent horizontal scroll */
+#dashboard-view .recentVehicles {
+  overflow-x: visible !important;
+}
+
+#dashboard-view .recentVehicles table {
+  width: 100% !important;
+  min-width: auto !important;
+  max-width: 100% !important;
 }

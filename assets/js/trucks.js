@@ -10,6 +10,11 @@ function initializeTrucks() {
   // Setup trucks event listeners
   setupTrucksEventListeners();
   
+  // Load plant counts with truck as default tab type
+  if (window.loadPlantCounts) {
+    window.loadPlantCounts('trucks', 'truck');
+  }
+  
   // Reset to Truck as default active state when entering trucks tab
   setTimeout(() => {
     switchTrucksView('trucks');

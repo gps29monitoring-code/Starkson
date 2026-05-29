@@ -7,6 +7,11 @@ function initializeRepair() {
   // Setup repair event listeners
   setupRepairEventListeners();
   
+  // Load plant counts with truck as default tab type
+  if (window.loadPlantCounts) {
+    window.loadPlantCounts('repair', 'truck');
+  }
+  
   // Load repair data
   loadRepairData();
 }

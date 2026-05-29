@@ -12,6 +12,17 @@ async function initializeStatus() {
   // Setup status event listeners
   setupStatusEventListeners();
   
+  // Set truck button as active by default
+  const truckBtn = document.getElementById('status-truck-btn');
+  if (truckBtn) {
+    truckBtn.classList.add('active');
+  }
+  
+  // Load plant counts with truck as default tab type
+  if (window.loadPlantCounts) {
+    window.loadPlantCounts('status', 'truck');
+  }
+  
   // Ensure vehicle data is loaded before proceeding
   if (typeof window.vehicleStatusRecords === 'undefined' || !window.vehicleStatusRecords || window.vehicleStatusRecords.length === 0) {
     console.log('Vehicle data not loaded, loading now...');
@@ -38,7 +49,7 @@ async function initializeStatus() {
 // Setup status event listeners
 function setupStatusEventListeners() {
   // Truck table button
-  const truckBtn = document.getElementById('truck-table-btn');
+  const truckBtn = document.getElementById('status-truck-btn');
   if (truckBtn) {
     truckBtn.addEventListener('click', () => {
       switchStatusView('trucks');
@@ -46,7 +57,7 @@ function setupStatusEventListeners() {
   }
   
   // Trailer table button
-  const trailerBtn = document.getElementById('trailer-table-btn');
+  const trailerBtn = document.getElementById('status-trailer-btn');
   if (trailerBtn) {
     trailerBtn.addEventListener('click', () => {
       switchStatusView('trailers');
@@ -54,7 +65,7 @@ function setupStatusEventListeners() {
   }
   
   // Container table button
-  const containerBtn = document.getElementById('container-table-btn');
+  const containerBtn = document.getElementById('status-container-btn');
   if (containerBtn) {
     containerBtn.addEventListener('click', () => {
       switchStatusView('containers');
@@ -235,9 +246,9 @@ function switchStatusView(view) {
   currentStatusView = view;
   
   // Update button states
-  const truckBtn = document.getElementById('truck-table-btn');
-  const trailerBtn = document.getElementById('trailer-table-btn');
-  const containerBtn = document.getElementById('container-table-btn');
+  const truckBtn = document.getElementById('status-truck-btn');
+  const trailerBtn = document.getElementById('status-trailer-btn');
+  const containerBtn = document.getElementById('status-container-btn');
   
   // Remove active class from all buttons
   [truckBtn, trailerBtn, containerBtn].forEach(btn => {
